@@ -13,9 +13,10 @@ jobs:
         NUGET_VERSION: ['4.4.1']
     steps:
       - name: Install NuGet CLI
-        run: pwd
-        
-##Test
+        run: choco install nuget.commandline --version=$NUGET_VERSION -y
+
       - name: Build project
         run: |
+          nuget help
+          nuget restore
           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
