@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+stages:
+  - build
+  - deploy
+
+variables:
+  NUGET_VERSION: '4.4.1'
+
+jobs:
+  build_dev_job:
+    runs-on: self-hosted
+    stage: build
+    steps:
+      - name: Install NuGet CLI
+        run: choco install nuget.commandline --version=$NUGET_VERSION -y
+
+      - name: Build project
+        run: |
+          nuget help
+          nuget restore
+          msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
+    tags:
+      - buildasp
