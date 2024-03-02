@@ -13,7 +13,7 @@ jobs:
         NUGET_VERSION: ['4.4.1']
     steps:
       - name: Install NuGet CLI
-        run: choco install nuget.commandline --version=$NUGET_VERSION -y
+       # run: choco install nuget.commandline --version=$NUGET_VERSION -y
 ##Test
       - name: Build project
         run: |
