@@ -13,7 +13,7 @@ jobs:
         NUGET_VERSION: ['4.4.1']
     steps:
       - name: Install NuGet CLI
-        run: nuget help
+        run: pwd
         
 ##Test
       - name: Build project
