@@ -20,5 +20,3 @@ jobs:
           nuget help
           nuget restore
           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
-    tags:
-      - buildasp
