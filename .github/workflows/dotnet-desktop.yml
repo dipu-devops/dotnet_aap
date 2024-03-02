@@ -1,3 +1,10 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build_dev_job:
     runs-on: self-hosted
@@ -16,51 +23,3 @@ jobs:
           nuget help
           nuget restore
           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
-
-      # Add step to upload artifacts
-      - name: Upload CI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CI  # Name of the artifact
-          path: ${{ github.workspace }}/output  # Path to the folder containing artifacts (modify as needed)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# name: CI
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build_dev_job:
-#     runs-on: self-hosted
-#     strategy:
-#       matrix:
-#         NUGET_VERSION: ['4.4.1']
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-
-#       - name: Install NuGet CLI
-#         run: choco install nuget.commandline --version=$NUGET_VERSION -y
-
-#       - name: Build project
-#         run: |
-#           nuget help
-#           nuget restore
-#           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
