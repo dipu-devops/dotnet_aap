@@ -18,6 +18,4 @@ jobs:
 ##Test
       - name: Build project
         run: |
-          nuget help
-          nuget restore
           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
