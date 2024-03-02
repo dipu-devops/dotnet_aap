@@ -5,17 +5,12 @@ on:
     branches:
       - main
 
-stages:
-  - build
-  - deploy
-
-variables:
-  NUGET_VERSION: '4.4.1'
-
 jobs:
   build_dev_job:
     runs-on: self-hosted
-    stage: build
+    strategy:
+      matrix:
+        NUGET_VERSION: ['4.4.1']
     steps:
       - name: Install NuGet CLI
         run: choco install nuget.commandline --version=$NUGET_VERSION -y
