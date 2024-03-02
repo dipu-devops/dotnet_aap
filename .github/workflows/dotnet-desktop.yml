@@ -12,6 +12,9 @@ jobs:
       matrix:
         NUGET_VERSION: ['4.4.1']
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install NuGet CLI
         run: choco install nuget.commandline --version=$NUGET_VERSION -y
 
