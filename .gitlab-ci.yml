@@ -1,0 +1,55 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  NUGET_VERSION: '4.4.1'
+
+before_script:
+ - choco install nuget.commandline --version=$NUGET_VERSION -y
+
+build-dev-job:
+  stage: build
+  tags:
+    - buildasp 
+  script: 
+     # Build the project
+    - nuget help
+    - nuget restore
+    # - cd D:\Demo_Pipeline\asp_dotnet_project
+    #  # Configure Git settings
+    # - git config --global --add safe.directory D:/Demo_Pipeline/asp_dotnet_project
+    # - git config --add --global core.sharedRepository group
+    # - git fetch
+    # - git reset --hard origin/main
+    - msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
+    # - Copy-Item  -Path D:\Demo_Pipeline\asp_dotnet_project\Publish -Destination C:/GitLab-Runner/builds/QW4tnzYXg/0/deep.devops/asp_dotnet_project/ -Recurse -force
+     # List files in the GitLab Runner directory
+    - ls 
+  artifacts:
+    paths:
+      - emistpronew\Presentation\EmistPro.Web\bin\Release\Publish
+    expire_in: 1 month
+ 
+  only:
+    - main
+
+deploy-dev-job:
+  stage: deploy
+  tags:
+    - deployasp
+  script:
+     - ls
+     - pwd
+     # Display message indicating deployment to DEV Branch
+     - echo "Deploying to DEV Branch"
+     - appcmd stop site /site.name:'aspdotnet'
+     - Copy-Item  -Path Publish -Destination C:\inetpub\wwwroot\dotnet_demo -Recurse -force
+     - appcmd start site /site.name:'aspdotnet'
+ 
+  only:
+    variables:
+      - $CI_COMMIT_REF_NAME == "main"
+  when: manual
+  dependencies:
+   - build-dev-job
