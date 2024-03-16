@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: my-artifact
+          name: Dist
       - name: Display structure of downloaded files
         run: ls -R
 
