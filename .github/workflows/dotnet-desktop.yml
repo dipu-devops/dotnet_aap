@@ -24,9 +24,55 @@ jobs:
           nuget restore
           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
 
-        # Add step to upload artifacts
       - name: Upload CI artifact
         uses: actions/upload-artifact@v4
         with:
           name: Dist  # Name of the artifact
-          path: aspnet-get-started\bin\Release\Publish  # Path to the folder containing artifactss
+          path: aspnet-get-started\bin\Release\Publish  # Path to the folder containing artifacts
+
+  release-project:
+    name: Release project
+    runs-on: self-hosted
+    needs: build_dev_job
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
+      - name: Display structure of downloaded files
+        run: ls -R
+
+
+# name: CI
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build_dev_job:
+#     runs-on: self-hosted
+#     strategy:
+#       matrix:
+#         NUGET_VERSION: ['4.4.1']
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Install NuGet CLI
+#         run: choco install nuget.commandline --version=$NUGET_VERSION -y
+
+#       - name: Build project
+#         run: |
+#           nuget help
+#           nuget restore
+#           msbuild ./ /p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml
+
+#         # Add step to upload artifacts
+#       - name: Upload CI artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: Dist  # Name of the artifact
+#           path: aspnet-get-started\bin\Release\Publish  # Path to the folder containing artifactss
+          
